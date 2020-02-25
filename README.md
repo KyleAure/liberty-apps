@@ -1,2 +1,2 @@
-# websphere-sandbox
-Sandbox environment for creating and testing applications in websphere liberty
+# WebSphereApps
+Test applications for use in a websphere environment
