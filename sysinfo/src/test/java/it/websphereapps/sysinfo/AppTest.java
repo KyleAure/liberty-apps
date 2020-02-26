@@ -1,4 +1,4 @@
-package it.websphereapps.jaxrs.jdbcderby.personal.websphereapps.app.sysinfo;
+package it.websphereapps.sysinfo;
 
 import org.junit.jupiter.api.Test;
 

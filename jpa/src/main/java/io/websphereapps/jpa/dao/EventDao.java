@@ -1,6 +1,6 @@
-package io.openliberty.guides.event.dao;
+package io.websphereapps.jpa.dao;
 
-import io.openliberty.guides.event.models.Event;
+import io.websphereapps.jpa.models.Event;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;

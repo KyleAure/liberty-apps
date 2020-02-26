@@ -1,7 +1,7 @@
-package io.openliberty.guides.event.resources;
+package io.websphereapps.jpa.resources;
 
-import io.openliberty.guides.event.dao.EventDao;
-import io.openliberty.guides.event.models.Event;
+import io.websphereapps.jpa.dao.EventDao;
+import io.websphereapps.jpa.models.Event;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;

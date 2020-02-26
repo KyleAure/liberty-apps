@@ -1,4 +1,4 @@
-package io.jnosql;
+package io.websphereapps.jnosql;
 
 import org.jnosql.artemis.Entity;
 import org.jnosql.artemis.Id;

@@ -1,4 +1,4 @@
-package it.websphereapps.jaxrs.jdbcderby.io.openliberty.guides.event;
+package it.websphereapps.jpa;
 
 import org.microshed.testing.SharedContainerConfiguration;
 import org.microshed.testing.testcontainers.ApplicationContainer;

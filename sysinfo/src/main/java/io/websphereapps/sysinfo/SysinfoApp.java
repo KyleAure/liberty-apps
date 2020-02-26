@@ -1,4 +1,4 @@
-package personal.websphereapps.app.sysinfo;
+package io.websphereapps.sysinfo;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

@@ -1,6 +1,6 @@
-package it.websphereapps.jaxrs.jdbcderby.io.openliberty.guides.event;
+package it.websphereapps.jpa;
 
-import io.openliberty.guides.event.resources.EventResource;
+import io.websphereapps.jpa.resources.EventResource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.microshed.testing.SharedContainerConfig;

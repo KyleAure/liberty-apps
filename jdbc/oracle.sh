@@ -25,4 +25,3 @@ curl -i 'http://localhost:9080/jdbcoracle/insert?key=2&value=Riley'
 curl -i 'http://localhost:9080/jdbcoracle/insert?key=3&value=Bri'
 curl -i http://localhost:9080/jdbcoracle
 open 'http://localhost:9080/jdbcoracle'
-

@@ -1,4 +1,4 @@
-package io.openliberty.guides.event.models;
+package io.websphereapps.jpa.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -91,14 +91,9 @@ public class Event implements Serializable {
             return false;
         }
         if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
+            return other.name == null;
+        } else return name.equals(other.name);
 
-        return true;
     }
 
     @Override

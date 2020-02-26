@@ -1,4 +1,4 @@
-package personal.websphereapps.app.sysinfo;
+package io.websphereapps.sysinfo;
 
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;

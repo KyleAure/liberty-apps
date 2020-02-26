@@ -1,4 +1,4 @@
-package io.openliberty.guides.event.resources;
+package io.websphereapps.jpa.resources;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
