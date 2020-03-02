@@ -8,7 +8,7 @@ dependencies {
     testCompile 'org.slf4j:slf4j-log4j12:1.7.30'
     testCompile 'org.microshed:microshed-testing-testcontainers:0.7.1'
 
-    compile 'org.testcontainers:oracle-xe:1.12.1'
+    compile 'org.testcontainers:oracle-xe:1.12.5'
     compile 'com.oracle.ojdbc:ojdbc8:19.3.0.0'
 
     providedCompile 'io.openliberty.features:jdbc-4.2:20.0.0.2'
