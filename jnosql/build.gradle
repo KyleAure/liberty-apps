@@ -11,7 +11,7 @@ dependencies {
     compile 'org.jnosql.diana:mongodb-driver:0.0.9'
 
     providedCompile 'javax:javaee-api:8.0.1'
-    providedCompile 'org.eclipse.microprofile:microprofile:3.0'
+    providedCompile 'org.eclipse.microprofile:microprofile:3.3'
 
     providedCompile 'io.openliberty.features:jaxrs-2.1:19.0.0.10'
 }
