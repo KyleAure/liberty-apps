@@ -62,7 +62,7 @@ subprojects {
 
     dependencies {
         jdbcDrivers 'com.ibm.db2:jcc:11.5.0.0',
-                'org.postgresql:postgresql:42.2.5',
+                'org.postgresql:postgresql:42.2.10',
                 'com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8',
                 'org.apache.derby:derbyclient:10.15.2.0',
                 'org.apache.derby:derby:10.11.1.1',
