@@ -10,7 +10,7 @@ dependencies {
     compile 'org.testcontainers:oracle-xe:1.12.5'
     testCompile 'org.apache.derby:derby:10.15.2.0'
 
-    providedCompile 'io.openliberty.features:jaxrs-2.1:19.0.0.10'
+    providedCompile 'io.openliberty.features:jaxrs-2.1:20.0.0.2'
     providedCompile 'io.openliberty.features:jsonp-1.1:20.0.0.2'
     providedCompile 'io.openliberty.features:cdi-2.0:20.0.0.2'
     providedCompile 'io.openliberty.features:jsf-2.3:20.0.0.2'
