@@ -14,7 +14,7 @@ dependencies {
     providedCompile 'io.openliberty.features:jsonp-1.1:20.0.0.2'
     providedCompile 'io.openliberty.features:cdi-2.0:20.0.0.2'
     providedCompile 'io.openliberty.features:jsf-2.3:20.0.0.2'
-    providedCompile 'io.openliberty.features:jpa-2.2:20.0.0.2'
+    providedCompile 'io.openliberty.features:jpa-2.2:20.0.0.3'
     providedCompile 'io.openliberty.features:mpOpenAPI-1.1:20.0.0.2'
 }
 
