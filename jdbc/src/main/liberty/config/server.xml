@@ -14,14 +14,14 @@
     <logging traceSpecification="*=info:RRA=all"/>
 
     <library id="jdbcLib">
-        <file name="${server.config.dir}/resources/{env.JDBC_DRIVER}"/>
+        <file name="${server.config.dir}/resources/derby.jar"/>
     </library>
+
+    <authData user="user1" password="password"/>
 
     <!-- General Datasource -->
     <dataSource id="DefaultDatasource">
         <jdbcDriver libraryRef="jdbcLib"/>
-        <properties
-                url="${env.JDBC_URL}"
-                user="${env.USER}" password="${env.PASSWORD}"/>
+        <properties.derby.embedded createDatabase="create" databseName="memory:test"/>
     </dataSource>
 </server>

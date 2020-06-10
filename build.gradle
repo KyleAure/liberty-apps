@@ -4,11 +4,23 @@ allprojects {
     version = '1.0'
 }
 
+// configure liberty-gradle-plugin
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'io.openliberty.tools:liberty-gradle-plugin:3.0'
+    }
+}
+
 subprojects {
     //Plugins for all sub projects
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'liberty'
+    apply plugin: 'war'
 
     //General properties
     sourceCompatibility = 1.8
@@ -16,12 +28,8 @@ subprojects {
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = 'UTF-8'
 
-    //Liberty properties
-    ext {
-        appName = project.name
-        testServerHttpPort = 9080
-        testServerHttpsPort = 9443
-        warContext = appName
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
     }
 
     //Maven central repository for dependencies
@@ -29,32 +37,37 @@ subprojects {
         mavenCentral()
     }
 
-    //Liberty code
-    liberty {
-        server {
-            name = "${appName}Server"
-            configFile = file("src/main/liberty/config/server.xml")
-            bootstrapProperties = ['default.http.port' : testServerHttpPort,
-                                   'default.https.port': testServerHttpsPort,
-                                   'app.context.root'  : warContext]
-            packageLiberty {
-                archive = "$buildDir/${appName}.zip"
-                include = "usr"
-            }
+    //Liberty properties
+    ext  {
+        liberty.server.var.'default.http.port' = '9080'
+        liberty.server.var.'default.https.port' = '9443'
+        liberty.server.var.'app.context.root' = project.name
+    }
+
+    task openBrowser {
+        description = 'Open browser to the running application'
+        doLast {
+            String port = liberty.server.var.'default.http.port'
+            String context = liberty.server.var.'app.context.root'
+            String URL = "http://localhost:" + port + "/" + context
+            java.awt.Desktop.desktop.browse URL.toURI()
+            java.awt.Desktop.desktop.browse file("$buildDir/reports/tests/test/index.html").toURI()
         }
     }
 
     test {
-        defaultCharacterEncoding = "UTF-8"
         useJUnitPlatform()
         testLogging {
-            displayGranularity 1
-            showStandardStreams = true
-            showStackTraces = true
-            exceptionFormat = 'full'
-            events 'PASSED', 'FAILED', 'SKIPPED'
+            events 'passed', 'skipped', 'failed', 'standardOut'
+            exceptionFormat 'full'
         }
+        systemProperty 'http.port', liberty.server.var.'default.http.port'
+        systemProperty 'context.root',  liberty.server.var.'app.context.root'
     }
+
+    test.dependsOn 'libertyStart'
+    test.finalizedBy(openBrowser)
+    clean.dependsOn 'libertyStop'
 
     configurations {
         jdbcDrivers { transitive = false }
@@ -67,14 +80,6 @@ subprojects {
                 'org.apache.derby:derbyclient:10.11.1.1',
                 'org.apache.derby:derby:10.11.1.1',
                 'com.oracle.ojdbc:ojdbc8_g:19.3.0.0'
-
-        testCompile "org.apache.cxf:cxf-rt-rs-client:3.2.6"
-        testCompile "org.apache.cxf:cxf-rt-rs-extension-providers:3.2.6"
-        testCompile "org.glassfish:javax.json:1.0.4"
-        testCompile "javax.xml.bind:jaxb-api:2.3.1"
-        testCompile "com.sun.xml.bind:jaxb-core:2.3.0.1"
-        testCompile "com.sun.xml.bind:jaxb-impl:2.3.2"
-        testCompile "javax.activation:activation:1.1.1"
     }
 
     task copyJdbcDrivers(type: Copy) {
@@ -88,14 +93,3 @@ subprojects {
         rename 'mssql-jdbc.*.jar', 'mssql-jdbc.jar'
     }
 }
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:2.6.3'
-    }
-}
-
-
