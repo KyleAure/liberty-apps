@@ -1,14 +1,14 @@
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
-    testCompile 'org.slf4j:slf4j-log4j12:1.7.29'
-    testCompile 'org.microshed:microshed-testing-testcontainers:0.7.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
+    testCompile 'org.slf4j:slf4j-log4j12:1.7.30'
+    testCompile 'org.microshed:microshed-testing-testcontainers:0.8'
 
-    providedCompile 'io.openliberty.features:jaxrs-2.1:19.0.0.10'
-    providedCompile 'io.openliberty.features:jsonp-1.1:19.0.0.10'
-    providedCompile 'io.openliberty.features:cdi-2.0:19.0.0.10'
-    providedCompile 'io.openliberty.features:mpMetrics-1.1:19.0.0.10'
-    providedCompile 'io.openliberty.features:mpHealth-2.0:19.0.0.10'
+    providedCompile 'io.openliberty.features:jaxrs-2.1:20.0.0.3'
+    providedCompile 'io.openliberty.features:jsonp-1.1:20.0.0.3'
+    providedCompile 'io.openliberty.features:cdi-2.0:20.0.0.3'
+    providedCompile 'io.openliberty.features:mpMetrics-1.1:20.0.0.3'
+    providedCompile 'io.openliberty.features:mpHealth-2.0:20.0.0.3'
 }
 
 
