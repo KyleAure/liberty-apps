@@ -1,7 +1,2 @@
 rootProject.name = 'parent'
-include(':jaxrs')
-include(':jdbc')
-include(':jnosql')
-include(':jpa')
-include(':sysinfo')
-include(':ejb')
+include ":jaxrs", ":jdbc", ":jnosql", ":jpa", ":sysinfo", ":ejb"

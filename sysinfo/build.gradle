@@ -1,6 +1,37 @@
+apply plugin: 'liberty'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'io.openliberty.tools:liberty-gradle-plugin:3.0'
+    }
+}
+
+//Liberty properties
+ext  {
+    liberty.server.var.'default.http.port' = '9080'
+    liberty.server.var.'default.https.port' = '9443'
+    liberty.server.var.'app.context.root' = project.name
+}
+
+task openApp {
+    description = 'Open browser to the running application'
+    doLast {
+        String port = liberty.server.var.'default.http.port'
+        String context = liberty.server.var.'app.context.root'
+        String URL = "http://localhost:" + port + "/" + context
+        java.awt.Desktop.desktop.browse URL.toURI()
+    }
+}
+
+test {
+    systemProperty 'http.port', liberty.server.var.'default.http.port'
+    systemProperty 'context.root',  liberty.server.var.'app.context.root'
+}
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
     testCompile 'org.slf4j:slf4j-log4j12:1.7.30'
     testCompile 'org.microshed:microshed-testing-testcontainers:0.8'
 
@@ -10,5 +41,8 @@ dependencies {
     providedCompile 'io.openliberty.features:mpMetrics-1.1:20.0.0.3'
     providedCompile 'io.openliberty.features:mpHealth-2.0:20.0.0.3'
 }
+
+test.dependsOn 'libertyStart'
+test.finalizedBy 'libertyStop'
 
 

@@ -1,79 +1,59 @@
 allprojects {
-    //Group and version information for sub projects
-    group = 'websphereapps'
-    version = '1.0'
-}
-
-// configure liberty-gradle-plugin
-buildscript {
-    repositories {
-        mavenCentral()
-        mavenLocal()
-    }
-    dependencies {
-        classpath 'io.openliberty.tools:liberty-gradle-plugin:3.0'
-    }
-}
-
-subprojects {
-    //Plugins for all sub projects
     apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'liberty'
-    apply plugin: 'war'
+
+    //Group and version information for sub projects
+    group = 'websphereapps.$task.project.name'
+    version = '1.0'
 
     //General properties
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = 'UTF-8'
+}
 
+subprojects {
+    apply plugin: 'war'
+    
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
 
-    //Maven central repository for dependencies
-    repositories {
-        mavenCentral()
-    }
-
-    //Liberty properties
-    ext  {
-        liberty.server.var.'default.http.port' = '9080'
-        liberty.server.var.'default.https.port' = '9443'
-        liberty.server.var.'app.context.root' = project.name
-    }
-
-    task openBrowser {
-        description = 'Open browser to the running application'
+    task openResults {
+        description = 'Open browser to the test results'
         doLast {
-            String port = liberty.server.var.'default.http.port'
-            String context = liberty.server.var.'app.context.root'
-            String URL = "http://localhost:" + port + "/" + context
-            java.awt.Desktop.desktop.browse URL.toURI()
             java.awt.Desktop.desktop.browse file("$buildDir/reports/tests/test/index.html").toURI()
         }
     }
 
     test {
+        // Use junit platform for unit tests
         useJUnitPlatform()
+
+        // Always run tests, even when nothing changed.
+        dependsOn 'cleanTest'
+
         testLogging {
             events 'passed', 'skipped', 'failed', 'standardOut'
             exceptionFormat 'full'
         }
-        systemProperty 'http.port', liberty.server.var.'default.http.port'
-        systemProperty 'context.root',  liberty.server.var.'app.context.root'
     }
 
-    test.dependsOn 'libertyStart'
-    test.finalizedBy(openBrowser)
-    clean.dependsOn 'libertyStop'
+    repositories {
+        mavenCentral()
+    }
 
     configurations {
         jdbcDrivers { transitive = false }
     }
 
     dependencies {
+        // Use JUnit Jupiter API for testing.
+        testCompile 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+        testCompile 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+
+        // Use JUnit Jupiter Engine for testing.
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
         jdbcDrivers 'com.ibm.db2:jcc:11.5.0.0',
                 'org.postgresql:postgresql:42.2.12',
                 'com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8',
@@ -92,4 +72,6 @@ subprojects {
         rename 'postgresql.*.jar', 'postgresql.jar'
         rename 'mssql-jdbc.*.jar', 'mssql-jdbc.jar'
     }
+
+    test.finalizedBy(openResults)
 }
