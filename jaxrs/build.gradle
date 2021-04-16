@@ -38,7 +38,7 @@ dependencies {
     providedCompile 'javax:javaee-api:8.0.1'
     providedCompile 'org.eclipse.microprofile:microprofile:3.3'
 
-    providedCompile 'io.openliberty.features:jaxrs-2.1:20.0.0.3'
+    providedCompile 'io.openliberty.features:jaxrs-2.1:21.0.0.4'
     providedCompile 'io.openliberty.features:jsonp-1.1:20.0.0.3'
 }
 
