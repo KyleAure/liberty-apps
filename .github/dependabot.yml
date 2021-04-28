@@ -1,0 +1,59 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "11:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: io.openliberty.features:mpOpenAPI-1.1
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
+  - dependency-name: io.openliberty.features:jsonp-1.1
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
+  - dependency-name: io.openliberty.features:jaxrs-2.1
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
+  - dependency-name: io.openliberty.features:mpHealth-2.0
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
+  - dependency-name: io.openliberty.features:servlet-4.0
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
+  - dependency-name: com.microsoft.sqlserver:mssql-jdbc
+    versions:
+    - 9.1.1.jre8-preview
+    - 9.2.0.jre8
+    - 9.2.1.jre8
+  - dependency-name: io.openliberty.features:jpa-2.2
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
+  - dependency-name: io.openliberty.features:cdi-2.0
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
+  - dependency-name: io.openliberty.features:jaxrsClient-2.1
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
+  - dependency-name: io.openliberty.features:mpMetrics-1.1
+    versions:
+    - 21.0.0.1
+    - 21.0.0.2
+    - 21.0.0.3
