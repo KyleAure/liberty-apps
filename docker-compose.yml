@@ -1,0 +1,48 @@
+version: '3'
+services:
+  open-liberty:
+    build:
+      context: ./${PROJECT}/
+      dockerfile: Dockerfile
+    container_name: open-liberty-${version}
+    ports:
+      - 9080:9080
+      - 9443:9443
+    links:
+      - db2
+      - oracle
+      - sqlserver
+      - postgre
+  db2:
+    image: ibmcom/db2:11.5.5.1
+    container_name: db2
+    environment: 
+      - LICENSE=accept
+      - DBNAME=testdb
+      - DB2INST1_PASSWORD=StrongPassword1!
+    privileged: True
+    ports:
+      - 50000:50000
+  oracle:
+    image: kyleaure/oracle-18.4.0-xe-prebuilt:2.0
+    container_name: oracle
+    ports:
+      - 1521:1521
+      - 5500:5500
+      - 8080:8080
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-CU10-ubuntu-16.04
+    container_name: sqlserver
+    environment: 
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongPassword1!
+    ports:
+      - 1433:1433
+  postgre:
+      image: postgres:11.12
+      container_name: postgre
+      environment: 
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=StrongPassword1!
+      ports:
+        - 1433:1433

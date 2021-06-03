@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'io.openliberty.tools:liberty-gradle-plugin:3.1.2'
+    }
+}
+
+apply plugin: 'liberty'
+
+//Liberty properties
+ext  {
+    liberty.server.var.'default.http.port' = '9080'
+    liberty.server.var.'default.https.port' = '9443'
+    liberty.server.var.'app.context.root' = project.name
+}
+
+//Open test results after completion of testing
+task openResults {
+    description = 'Open browser to the test results'
+    doLast {
+        java.awt.Desktop.desktop.browse file("$buildDir/reports/tests/test/index.html").toURI()
+    }
+}
+
+//Open application during runtime
+task openApp {
+    description = 'Open browser to the running application'
+    doLast {
+        String port = liberty.server.var.'default.http.port'
+        String context = liberty.server.var.'app.context.root'
+        String URL = "http://localhost:" + port + "/" + context
+        java.awt.Desktop.desktop.browse URL.toURI()
+    }
+}
+
+//Testing config
+test {
+    // Use junit platform for unit tests
+    useJUnitPlatform()
+
+    //Logging parameters for testing
+    testLogging {
+        events 'passed', 'skipped', 'failed', 'standardOut'
+        exceptionFormat 'full'
+    }
+
+    //Liberty settings for testing
+    systemProperty 'http.port', liberty.server.var.'default.http.port'
+    systemProperty 'context.root',  liberty.server.var.'app.context.root'
+}
+
+
+dependencies {
+    providedCompile 'io.openliberty.features:jdbc-4.2:20.0.0.3'
+    providedCompile 'io.openliberty.features:jaxrs-2.1:20.0.0.3'
+    providedCompile 'io.openliberty.features:jaxrsClient-2.1:20.0.0.3'
+    providedCompile 'io.openliberty.features:jndi-1.0:20.0.0.3'
+    providedCompile 'io.openliberty.features:jsonp-1.1:20.0.0.3'
+    providedCompile 'io.openliberty.features:servlet-4.0:20.0.0.3'
+}
+
+test.dependsOn libertyStart
+test.finalizedBy openResults
+test.finalizedBy libertyStop

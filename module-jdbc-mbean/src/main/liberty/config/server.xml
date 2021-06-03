@@ -1,0 +1,25 @@
+<server description="Oracle JDBC Application Server">
+    <!-- Features -->
+    <featureManager>
+        <feature>jdbc-4.2</feature>
+        <feature>servlet-4.0</feature>
+    </featureManager>
+
+    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+                id="defaultHttpEndpoint" host="*" />
+
+    <webApplication location="module-jdbc-mbean-1.0.war" contextRoot="${app.context.root}" />
+
+    <library id="jdbcLib">
+        <fileset dir="${server.config.dir}/resources/jdbc" includes="derby.jar"/>
+    </library>
+    
+    <authData id="auth1" user="user1" password="password"/>
+
+    <dataSource id="testDS" jndiName="jdbc/testDS">
+        <jdbcDriver libraryRef="jdbcLib"/>
+        <properties.derby.embedded createDatabase="create" databaseName="memory:test"/>
+    </dataSource>
+    
+    <javaPermission codebase="${server.config.dir}/resources/jdbc/derby.jar" className="java.security.AllPermission"/>
+</server>

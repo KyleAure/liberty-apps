@@ -1,0 +1,24 @@
+<server description="Oracle JDBC Application Server">
+    <!-- Features -->
+    <featureManager>
+        <feature>jdbc-4.2</feature>
+        <feature>jndi-1.0</feature>
+        <feature>jaxrs-2.1</feature>
+    </featureManager>
+
+    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+                id="defaultHttpEndpoint" host="*" />
+
+    <webApplication location="module-jdbc-1.0.war" contextRoot="${app.context.root}"/>
+
+    <library id="jdbcLib">
+        <file name="${shared.resource.dir}/derby.jar"/>
+    </library>
+
+    <!-- General Datasource -->
+    <dataSource id="DefaultDataSource">
+        <jdbcDriver libraryRef="jdbcLib"/>
+        <containerAuthData user="user1" password="password"/>
+        <properties.derby.embedded createDatabase="create" databaseName="memory:test"/>
+    </dataSource>
+</server>

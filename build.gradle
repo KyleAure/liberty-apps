@@ -1,8 +1,9 @@
-allprojects {
+subprojects {
     apply plugin: 'java'
+    apply plugin: 'war'
 
     //Group and version information for sub projects
-    group = 'websphereapps.$task.project.name'
+    group = 'liberty.app.$project.name'
     version = '1.0'
 
     //General properties
@@ -10,33 +11,9 @@ allprojects {
     targetCompatibility = 1.8
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = 'UTF-8'
-}
 
-subprojects {
-    apply plugin: 'war'
-    
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
-    }
-
-    task openResults {
-        description = 'Open browser to the test results'
-        doLast {
-            java.awt.Desktop.desktop.browse file("$buildDir/reports/tests/test/index.html").toURI()
-        }
-    }
-
-    test {
-        // Use junit platform for unit tests
-        useJUnitPlatform()
-
-        // Always run tests, even when nothing changed.
-        dependsOn 'cleanTest'
-
-        testLogging {
-            events 'passed', 'skipped', 'failed', 'standardOut'
-            exceptionFormat 'full'
-        }
     }
 
     repositories {
@@ -57,14 +34,14 @@ subprojects {
         jdbcDrivers 'com.ibm.db2:jcc:11.5.0.0',
                 'org.postgresql:postgresql:42.2.12',
                 'com.microsoft.sqlserver:mssql-jdbc:7.4.1.jre8',
-                'org.apache.derby:derbyclient:10.15.2.0',
-                'org.apache.derby:derby:10.15.2.0',
+                'org.apache.derby:derbyclient:10.11.1.1',
+                'org.apache.derby:derby:10.11.1.1',
                 'com.oracle.ojdbc:ojdbc8_g:19.3.0.0'
     }
 
     task copyJdbcDrivers(type: Copy) {
         from configurations.jdbcDrivers
-        into 'src/main/liberty/config/resources'
+        into "src/main/liberty/config/resources/jdbc"
         rename 'jcc.*.jar', 'jcc.jar'
         rename 'derby-.*.jar', 'derby.jar'
         rename 'derbyclient-.*.jar', 'derbyclient.jar'
@@ -72,6 +49,4 @@ subprojects {
         rename 'postgresql.*.jar', 'postgresql.jar'
         rename 'mssql-jdbc.*.jar', 'mssql-jdbc.jar'
     }
-
-    test.finalizedBy(openResults)
 }
