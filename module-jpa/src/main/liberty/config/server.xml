@@ -1,0 +1,29 @@
+<server description="Sample Liberty server">
+
+  <featureManager>
+    <feature>jaxrs-2.1</feature>
+    <feature>jsonp-1.1</feature>
+    <feature>cdi-2.0</feature>
+    <feature>jpa-2.2</feature>
+  </featureManager>
+
+  <variable name="default.http.port" defaultValue="5050" />
+  <variable name="default.https.port" defaultValue="5051" />
+
+  <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+                id="defaultHttpEndpoint" host="*" />
+
+  <application location="backendServices.war" type="war" context-root="/"></application>
+
+<!-- DB2 -->
+    <library id="oracleLib">
+        <fileset dir="${server.config.dir}/resources/db2" includes="ojdbc8.jar"/>
+    </library>
+    
+    <authData id="auth1" user="system" password="oracle"/>
+
+    <dataSource id="eventjpadatasource" jndiName="jdbc/eventjpadatasource">
+        <jdbcDriver libraryRef="oracleLib"/>
+        <properties.oracle url="jdbc:oracle:thin:@//oracle:1521:XE" />
+    </dataSource>
+</server>
