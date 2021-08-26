@@ -1,0 +1,26 @@
+<server description="Oracle JDBC Application Server">
+    <!-- Features -->
+    <featureManager>
+        <feature>jdbc-4.2</feature>
+        <feature>jndi-1.0</feature>
+        <feature>servlet-4.0</feature>
+    </featureManager>
+
+    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+                id="defaultHttpEndpoint" host="*" />
+
+    <webApplication location="module-jdbc-direct-lookup-1.0.war" contextRoot="${app.context.root}" />   
+
+<!-- oracle -->
+    <library id="oracleLib">
+        <fileset dir="${server.config.dir}/resources/jdbc" includes="ojdbc8_g.jar"/>
+    </library>
+
+    <dataSource id="testDS" jndiName="jdbc/testDS">
+        <jdbcDriver libraryRef="oracleLib"/>
+        <containerAuthData user="system" password="oracle"/>
+        <properties.oracle URL="jdbc:oracle:thin:@//oracle:1521/XE"/>
+    </dataSource>
+    
+    <javaPermission codebase="${server.config.dir}/resources/jdbc/ojdbc8_g.jar" className="java.security.AllPermission"/>
+</server>
