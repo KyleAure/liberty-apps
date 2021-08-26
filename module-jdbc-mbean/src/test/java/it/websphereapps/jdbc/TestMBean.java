@@ -19,21 +19,21 @@ public class TestMBean extends TestServletClient {
     
     @Test
     public void testPurge() throws Exception {
-        String expected = "KJA1017 POOL CONTENTS:";
+        String expected = "KJA1017 POOL CONTENTS AFTER PURGE:";
         StringBuilder response = runTestWithResponse("purge");
         assertTrue(response.toString().contains(expected));
     }
     
     @Test
     public void testPurgeImmediate() throws Exception {
-        String expected = "KJA1017 POOL CONTENTS:";
+        String expected = "KJA1017 POOL CONTENTS AFTER PURGE IMMEDIATE:";
         StringBuilder response = runTestWithResponse("purgeImmediate");
         assertTrue(response.toString().contains(expected));
     }
     
     @Test
     public void testPurgeAbort() throws Exception {
-        String expected = "KJA1017 POOL CONTENTS:";
+        String expected = "KJA1017 POOL CONTENTS AFTER PURGE ABORT:";
         StringBuilder response = runTestWithResponse("purgeAbort");
         assertTrue(response.toString().contains(expected));
     }

@@ -6,4 +6,8 @@
   	<authentication-alias name="auth1"/>
   </resource-ref>
   
+  <resource-ref name="jdbc/testOldDS" binding-name="jdbc/testOldDS">
+  	<authentication-alias name="auth2"/>
+  </resource-ref>
+  
 </web-bnd>

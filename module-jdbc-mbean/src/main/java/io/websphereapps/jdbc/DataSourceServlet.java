@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -28,12 +30,25 @@ public class DataSourceServlet extends TestServlet {
 
 
     public void getConnections( HttpServletRequest request, HttpServletResponse response ) throws Exception {
+    	ArrayList<String> messages = new ArrayList<>();
+    	ArrayList<Connection> connections = new ArrayList();
+    	
     	// Get request param
-    	int connections = Integer.parseInt(request.getParameter(CONNECTIONS));
+    	int size = Integer.parseInt(request.getParameter(CONNECTIONS));
         
-        ArrayList<String> messages = new ArrayList<>();
-    	for(int i = 0; i < connections; i++) {
-    		messages.add("Attempt " + i + ": " + getConnectionProxy() + System.lineSeparator());
+    	for(int i = 0; i < size; i++) {
+    		try {
+        		Connection conn = getConnectionSimple();
+        		messages.add("Get connection call (" + i + "): " + conn);
+        		connections.add(conn);
+    		} catch (SQLException e) {
+    			messages.add(e.toString());
+    		}
+    	}
+    	
+    	for(Connection conn : connections) {
+    		messages.add("Close connection call: " + conn);
+    		conn.close();
     	}
     	
     	String[] messagesArr = new String[messages.size()];
@@ -56,7 +71,7 @@ public class DataSourceServlet extends TestServlet {
     	
         ObjectInstance bean= getMBeanObjectInstance();
 		mbs.invoke(bean.getObjectName(), "purgePoolContents", null, null);
-		message += "KJA1017 POOL CONTENTS: " + getPoolContents(bean);      
+		message += "KJA1017 POOL CONTENTS AFTER PURGE: " + getPoolContents(bean);      
         
 		respond(response, message);
     }
@@ -65,8 +80,8 @@ public class DataSourceServlet extends TestServlet {
     	String message = "";
     	
         ObjectInstance bean = getMBeanObjectInstance();
-		mbs.invoke(bean.getObjectName(), "purgePoolContents", null, null);
-		message += "KJA1017 POOL CONTENTS: " + getPoolContents(bean);
+		mbs.invoke(bean.getObjectName(), "purgePoolContents", new Object[] { "abort" }, null);
+		message += "KJA1017 POOL CONTENTS AFTER PURGE ABORT: " + getPoolContents(bean);
 
 		respond(response, message);
     }
@@ -75,8 +90,8 @@ public class DataSourceServlet extends TestServlet {
     	String message = "";
     	
         ObjectInstance bean = getMBeanObjectInstance();
-		mbs.invoke(bean.getObjectName(), "purgePoolContents", null, null);
-		message += "KJA1017 POOL CONTENTS: " + getPoolContents(bean);
+		mbs.invoke(bean.getObjectName(), "purgePoolContents", new Object[] { "immediate" }, null);
+		message += "KJA1017 POOL CONTENTS AFTER PURGE IMMEDIATE: " + getPoolContents(bean);
 
 		respond(response, message);
     }

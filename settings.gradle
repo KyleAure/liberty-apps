@@ -1,2 +1,2 @@
 rootProject.name = 'liberty-apps'
-include "module-jdbc", "module-jdbc-mbean", "module-system"
+include "module-jdbc", "module-jdbc-direct-lookup", "module-jdbc-mbean", "module-jpa", "module-system"

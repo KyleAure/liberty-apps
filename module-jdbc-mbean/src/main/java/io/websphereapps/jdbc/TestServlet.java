@@ -28,9 +28,9 @@ public class TestServlet extends HttpServlet {
 	
 	protected static final MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 	protected static final String MBEAN_TYPE = "com.ibm.ws.jca.cm.mbean.ConnectionManagerMBean";
-	protected static final String JNDI_NAME = "jdbc/testDS";
+	protected static final String JNDI_NAME = "jdbc/testOldDS";
 	
-	@Resource(name = "jdbc/testDS")
+	@Resource(name = "jdbc/testOldDS")
 	DataSource ds;
 	
 	protected String getConnectionProxy() throws InterruptedException {
@@ -49,6 +49,10 @@ public class TestServlet extends HttpServlet {
 			sql.printStackTrace(System.out);
 		}
 		return result;
+	}
+	
+	protected Connection getConnectionSimple() throws SQLException {
+		return ds.getConnection();
 	}
 	
 	protected String getPoolContents(ObjectInstance bean) throws Exception {

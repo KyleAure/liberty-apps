@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'io.openliberty.tools:liberty-gradle-plugin:3.1.2'
+        classpath 'io.openliberty.tools:liberty-gradle-plugin:3.2.1'
     }
 }
 
@@ -33,18 +33,35 @@ task openApp {
         String URL = "http://localhost:" + port + "/" + context
         java.awt.Desktop.desktop.browse URL.toURI()
     }
+} 
+
+task network(type: Exec) {
+    //Build and launch seperatly to avoid: https://github.com/docker/compose/issues/8121
+    commandLine 'sh', '-c', 'docker network create test-net'
 }
 
-task dockerRun(type: Exec) {
-	dependsOn build
-	finalizedBy openApp
+task appServer(type: Exec) {
+	dependsOn network
     //Build and launch seperatly to avoid: https://github.com/docker/compose/issues/8121
-    commandLine 'sh', '-c', 'docker build -t module-jdbc-mbean:1.0 . && docker run -d --name module-jdbc-mbean -p 9080:9080 -p 9443:9443 module-jdbc-mbean:1.0'
+    commandLine 'sh', '-c', 'docker run -d --name db2 --network test-net  --privileged=true -p 50000:50000 -e LICENSE=accept -e DB2INST1_PASSWORD=foobar1234 -e DBNAME=testdb ibmcom/db2:11.5.5.1'
+}
+
+task database(type: Exec) {
+	dependsOn network
+    //Build and launch seperatly to avoid: https://github.com/docker/compose/issues/8121
+    commandLine 'sh', '-c', 'docker build -t module-jdbc-mbean:1.0 . && docker run -d --name module-jdbc-mbean --network test-net -p 9080:9080 -p 9443:9443 module-jdbc-mbean:1.0'
+}
+
+task dockerRun() {
+	dependsOn build
+	dependsOn appServer
+	dependsOn database
+	finalizedBy openApp
 }
 
 task dockerClean(type: Exec) {
 	//Build and launch seperatly to avoid: https://github.com/docker/compose/issues/8121
-    commandLine 'sh', '-c', 'docker stop module-jdbc-mbean && docker rm module-jdbc-mbean && docker rmi -f module-jdbc-mbean:1.0'
+    commandLine 'sh', '-c', 'docker stop module-jdbc-mbean db2 && docker rm module-jdbc-mbean db2 && docker network rm test-net && docker rmi -f module-jdbc-mbean:1.0'
 }
 
 //Testing config

@@ -11,7 +11,10 @@ COPY --chown=1001:0 build/wlp/usr/servers/defaultServer/configDropins /config/co
 COPY --chown=1001:0 build/libs/module-jdbc-mbean-1.0.war /config/apps/
 
 #Copy and install ifixes
-COPY src/main/fixes/ /opt/ol/fixes
+COPY src/main/fixes/ /opt/ol/fixes/
+
+#Copy WLP
+#COPY src/main/wlp/ /opt/ol/wlp/
 
 #Install ifixes and apps
 RUN configure.sh
